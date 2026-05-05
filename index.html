@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Géopolitique de l'IA : Les 10 Leaders Mondiaux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --teal:   #127676;
+            --teal-light: #7ec0c8;
+            --orange: #E4632E;
+            --gold:   #E3A535;
+            --ink:    #0D1617;
+            --paper:  #F2EFE6;
+            --paper-dark: #E8E3D4;
+            --red:    #B83A1F;
+            --purple: #5A3A6B;
+            --shadow: 5px 5px 0 var(--ink);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(227,165,53,0.18) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(18,118,118,0.14) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(228,99,46,0.06) 0%, transparent 60%);
+        }
+
+        /* ── Page Frame ── */
+        .page-frame {
+            border: 4px solid var(--orange);
+            min-height: calc(100vh - 24px);
+            margin: 12px;
+            padding: 28px 32px;
+            position: relative;
+        }
+
+        .corner {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            opacity: 0.65;
+        }
+        .corner.tl { top: 6px; left: 6px; }
+        .corner.tr { top: 6px; right: 6px; transform: scaleX(-1); }
+        .corner.bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+        .corner.br { bottom: 6px; right: 6px; transform: scale(-1,-1); }
+
+        /* ── Header ── */
+        header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--teal);
+            position: relative;
+        }
+        header::after {
+            content: '◆';
+            position: absolute;
+            bottom: -11px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--paper);
+            padding: 0 12px;
+            color: var(--teal);
+            font-size: 14px;
+        }
+        .header-eyebrow {
+            display: inline-block;
+            background: var(--orange);
+            color: var(--paper);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            font-family: 'Anton', Impact, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            color: var(--ink);
+            line-height: 1.0;
+        }
+        header h1 .accent { color: var(--teal); }
+        header .subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.12em;
+            color: var(--ink);
+            opacity: 0.65;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        /* ── Grid layout ── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Retro panels ── */
+        .retro-panel {
+            background: var(--paper);
+            border: 3px solid var(--teal);
+            border-radius: 20px 4px 20px 4px;
+            box-shadow: var(--shadow);
+            padding: 22px;
+            position: relative;
+        }
+        .retro-panel::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px solid rgba(18,118,118,0.25);
+            border-radius: 17px 2px 17px 2px;
+            pointer-events: none;
+        }
+
+        .panel-title {
+            font-family: 'Anton', Impact, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 1.05rem;
+            color: var(--teal);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .panel-title .ornament { color: var(--orange); font-size: 1.2rem; }
+
+        /* ── Bot list ── */
+        .bot-list-wrap {
+            height: 420px;
+            overflow-y: auto;
+        }
+        .bot-list-wrap::-webkit-scrollbar { width: 4px; }
+        .bot-list-wrap::-webkit-scrollbar-thumb { background: var(--teal); }
+
+        .bot-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-bottom: 1px dashed rgba(18,118,118,0.3);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .bot-item:hover { background: rgba(18,118,118,0.06); }
+        .bot-item:last-child { border-bottom: none; }
+
+        .bot-logo-wrap {
+            width: 34px;
+            height: 34px;
+            padding: 5px;
+            background: var(--paper);
+            border: 2px solid var(--orange);
+            flex-shrink: 0;
+        }
+        .bot-logo-wrap svg { width: 100%; height: 100%; }
+
+        .bot-name {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+        }
+        .bot-city {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            opacity: 0.8;
+        }
+
+        /* ── Power blocs panel ── */
+        .blocs-panel {
+            background: var(--ink);
+            border: 3px solid var(--orange);
+            border-radius: 4px 20px 4px 20px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .blocs-title {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            border-bottom: 1px solid rgba(227,165,53,0.3);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+        .bloc-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .bloc-swatch {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .bloc-label {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--paper);
+        }
+        .bloc-sub {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(242,239,230,0.45);
+        }
+
+        /* ── Map ── */
+        #map {
+            height: 620px;
+            width: 100%;
+            border-radius: 0;
+            z-index: 1;
+            border: 3px solid var(--teal);
+            box-shadow: var(--shadow);
+        }
+        .map-wrapper {
+            position: relative;
+        }
+        .map-frame-label {
+            position: absolute;
+            top: -13px;
+            left: 20px;
+            background: var(--paper);
+            padding: 0 10px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--teal);
+            z-index: 10;
+        }
+
+        /* ── Markers ── */
+        .custom-div-icon { background: none; border: none; }
+
+        .logo-marker {
+            width: 48px;
+            height: 48px;
+            background: var(--paper);
+            border: 3px solid var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 0 var(--ink);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            padding: 7px;
+        }
+        .logo-marker:hover {
+            transform: translate(-2px,-2px);
+            box-shadow: 5px 5px 0 var(--ink);
+            z-index: 999 !important;
+        }
+        .logo-marker svg { width: 100%; height: 100%; }
+
+        .count-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--teal);
+            color: var(--paper);
+            font-family: 'Oswald', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--paper);
+        }
+
+        /* ── Info overlay ── */
+        #info-overlay {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 420px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: var(--paper);
+            border: 3px solid var(--teal);
+            box-shadow: 6px 6px 0 var(--ink);
+            padding: 24px;
+            z-index: 1000;
+        }
+        #info-overlay::-webkit-scrollbar { width: 4px; }
+        #info-overlay::-webkit-scrollbar-thumb { background: var(--teal); }
+        #info-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 1px solid rgba(18,118,118,0.25);
+            pointer-events: none;
+        }
+
+        .overlay-stats {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .overlay-stat {
+            flex: 1;
+            background: var(--ink);
+            padding: 8px 10px;
+            text-align: center;
+        }
+        .overlay-stat-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 3px;
+        }
+        .overlay-stat-value {
+            font-family: 'Anton', Impact, sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            color: var(--paper);
+        }
+
+        .overlay-atout {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border: 1px dashed var(--teal);
+            background: rgba(18,118,118,0.05);
+        }
+        .overlay-atout-label {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.58rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 4px;
+        }
+        .overlay-atout-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            color: var(--ink);
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .overlay-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--orange);
+            font-size: 18px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+            padding: 2px 6px;
+        }
+        .overlay-close:hover { background: var(--orange); color: var(--paper); }
+
+        .overlay-bot-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--orange);
+        }
+        .overlay-logo {
+            width: 48px;
+            height: 48px;
+            padding: 8px;
+            background: var(--paper);
+            border: 3px solid var(--orange);
+            flex-shrink: 0;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+        .overlay-logo svg { width: 100%; height: 100%; }
+        .overlay-bot-name {
+            font-family: 'Anton', Impact, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 1.5rem;
+            color: var(--ink);
+            line-height: 1;
+        }
+        .overlay-meta {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+            align-items: center;
+        }
+        .overlay-country-tag {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 3px 9px;
+            color: var(--paper);
+        }
+        .overlay-company {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink);
+            opacity: 0.55;
+        }
+        .overlay-geo-block {
+            background: var(--ink);
+            padding: 14px 16px;
+            border-left: 4px solid var(--gold);
+        }
+        .overlay-geo-label {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+        .overlay-geo-text {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            font-size: 0.88rem;
+            color: rgba(242,239,230,0.9);
+            line-height: 1.5;
+            font-style: italic;
+        }
+        .overlay-close-btn {
+            margin-top: 14px;
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: 2px solid var(--teal);
+            color: var(--teal);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .overlay-close-btn:hover { background: var(--teal); color: var(--paper); }
+    </style>
+</head>
+<body>
+
+<div class="page-frame">
+
+    <!-- Corner ornaments -->
+    <svg class="corner tl" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L20 2 L20 6 L6 6 L6 20 L2 20 Z" fill="#E4632E"/>
+        <path d="M10 2 L10 10 L2 10" stroke="#127676" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="3" fill="#E3A535"/>
+    </svg>
+    <svg class="corner tr" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L20 2 L20 6 L6 6 L6 20 L2 20 Z" fill="#E4632E"/>
+        <path d="M10 2 L10 10 L2 10" stroke="#127676" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="3" fill="#E3A535"/>
+    </svg>
+    <svg class="corner bl" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L20 2 L20 6 L6 6 L6 20 L2 20 Z" fill="#E4632E"/>
+        <path d="M10 2 L10 10 L2 10" stroke="#127676" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="3" fill="#E3A535"/>
+    </svg>
+    <svg class="corner br" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L20 2 L20 6 L6 6 L6 20 L2 20 Z" fill="#E4632E"/>
+        <path d="M10 2 L10 10 L2 10" stroke="#127676" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="3" fill="#E3A535"/>
+    </svg>
+
+    <!-- Header -->
+    <header>
+        <div class="header-eyebrow">Cartographie · Intelligence Artificielle · 2026</div>
+        <h1>Géopolitique de l'IA :<br><span class="accent">Le Nouveau Top 10</span></h1>
+        <p class="subtitle">Leaders mondiaux — Densité des hubs technologiques</p>
+    </header>
+
+    <!-- Main grid -->
+    <div class="main-grid">
+
+        <!-- Left column -->
+        <div>
+            <div class="retro-panel">
+                <div class="panel-title">
+                    <span class="ornament">❧</span> Top 10 Actualisé
+                </div>
+                <div class="bot-list-wrap" id="bot-list"></div>
+            </div>
+
+            <div class="blocs-panel">
+                <div class="blocs-title">◆ Blocs de Puissance ◆</div>
+                <div class="bloc-item">
+                    <div class="bloc-swatch" style="background:#2563eb; box-shadow: 0 0 8px rgba(37,99,235,0.5);"></div>
+                    <div>
+                        <div class="bloc-label">États-Unis</div>
+                        <div class="bloc-sub">Hub dominant — Silicon Valley</div>
+                    </div>
+                </div>
+                <div class="bloc-item">
+                    <div class="bloc-swatch" style="background:#E3A535; box-shadow: 0 0 8px rgba(227,165,53,0.5);"></div>
+                    <div>
+                        <div class="bloc-label">France</div>
+                        <div class="bloc-sub">Souveraineté — Paris AI Hub</div>
+                    </div>
+                </div>
+                <div class="bloc-item" style="margin-bottom:0">
+                    <div class="bloc-swatch" style="background:#B83A1F; box-shadow: 0 0 8px rgba(184,58,31,0.5);"></div>
+                    <div>
+                        <div class="bloc-label">Chine</div>
+                        <div class="bloc-sub">Challenger — Hangzhou / Pékin</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map column -->
+        <div class="map-wrapper">
+            <span class="map-frame-label">◆ Projection cartographique</span>
+            <div id="map"></div>
+
+            <!-- Info overlay -->
+            <div id="info-overlay">
+                <button class="overlay-close" onclick="closeOverlay()">✕</button>
+                <div id="overlay-content"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const logos = {
+        chatgpt: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 260" fill="#10a37f"><path d="M239.184 106.203a64.716 64.716 0 0 0-5.576-53.103C219.452 28.459 191 15.784 163.213 21.74A65.586 65.586 0 0 0 52.096 45.22a64.716 64.716 0 0 0-43.23 31.36c-14.31 24.602-11.061 55.634 8.033 76.74a64.665 64.665 0 0 0 5.525 53.102c14.174 24.65 42.644 37.324 70.446 31.36a64.72 64.72 0 0 0 48.754 21.744c28.481.025 53.714-18.361 62.414-45.481a64.767 64.767 0 0 0 43.229-31.36c14.137-24.558 10.875-55.423-8.083-76.483Zm-97.56 136.338a48.397 48.397 0 0 1-31.105-11.255l1.535-.87 51.67-29.825a8.595 8.595 0 0 0 4.247-7.367v-72.85l21.845 12.636c.218.111.37.32.409.563v60.367c-.056 26.818-21.783 48.545-48.601 48.601Zm-104.466-44.61a48.345 48.345 0 0 1-5.781-32.589l1.534.921 51.722 29.826a8.339 8.339 0 0 0 8.441 0l63.181-36.425v25.221a.87.87 0 0 1-.358.665l-52.335 30.184c-23.257 13.398-52.97 5.431-66.404-17.803ZM23.549 85.38a48.499 48.499 0 0 1 25.58-21.333v61.39a8.288 8.288 0 0 0 4.195 7.316l62.874 36.272-21.845 12.636a.819.819 0 0 1-.767 0L41.353 151.53c-23.211-13.454-31.171-43.144-17.804-66.405v.256Zm179.466 41.695-63.08-36.63L161.73 77.86a.819.819 0 0 1 .768 0l52.233 30.184a48.6 48.6 0 0 1-7.316 87.635v-61.391a8.544 8.544 0 0 0-4.4-7.213Zm21.742-32.69-1.535-.922-51.619-30.081a8.39 8.39 0 0 0-8.492 0L99.98 99.808V74.587a.716.716 0 0 1 .307-.665l52.233-30.133a48.652 48.652 0 0 1 72.236 50.391v.205ZM88.061 139.097l-21.845-12.585a.87.87 0 0 1-.41-.614V65.685a48.652 48.652 0 0 1 79.757-37.346l-1.535.87-51.67 29.825a8.595 8.595 0 0 0-4.246 7.367l-.051 72.697Zm11.868-25.58 28.138-16.217 28.188 16.218v32.434l-28.086 16.218-28.188-16.218-.052-32.434Z"/></svg>`,
+
+        claude: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#d97706"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>`,
+
+        deepseek: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#4D6BFE"><path d="M23.748 4.651c-.254-.124-.364.113-.512.233-.051.04-.094.09-.137.137-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.155-.708-.311-.955-.65-.172-.24-.219-.509-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.094.172.187.129.323-.082.28-.18.553-.266.833-.055.179-.137.218-.328.14a5.5 5.5 0 0 1-1.737-1.179c-.857-.828-1.631-1.743-2.597-2.46a12 12 0 0 0-.689-.47c-.985-.957.13-1.743.387-1.836.27-.098.094-.433-.778-.428-.872.003-1.67.295-2.687.685a3 3 0 0 1-.465.136 9.6 9.6 0 0 0-2.883-.101c-1.885.21-3.39 1.1-4.497 2.622C.082 8.776-.231 10.854.152 13.02c.403 2.284 1.568 4.175 3.36 5.653 1.857 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.132-.284 4.994-1.86.47.234.962.328 1.78.398.629.058 1.235-.031 1.705-.129.735-.155.684-.836.418-.961-2.155-1.004-1.682-.595-2.112-.926 1.095-1.295 2.768-3.598 3.284-6.733.05-.346.115-.834.108-1.114-.004-.171.035-.238.23-.257a4.2 4.2 0 0 0 1.545-.475c1.397-.763 1.96-2.016 2.093-3.517.02-.23-.004-.467-.247-.588M11.58 18.168c-2.088-1.642-3.101-2.183-3.52-2.16-.39.024-.32.472-.234.763.09.288.207.487.371.74.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.168-1.361-.801-2.5-1.86-3.301-3.306-.775-1.393-1.225-2.888-1.299-4.482-.02-.385.094-.522.477-.592a4.7 4.7 0 0 1 1.53-.038c2.131.311 3.946 1.264 5.467 2.774.868.86 1.525 1.887 2.202 2.89.72 1.066 1.494 2.082 2.48 2.915.348.291.626.513.892.677-.802.09-2.14.109-3.055-.615zm1.001-6.44a.306.306 0 0 1 .415-.287.3.3 0 0 1 .113.074.3.3 0 0 1 .086.214c0 .17-.136.307-.308.307a.303.303 0 0 1-.306-.307m3.11 1.596c-.2.081-.4.151-.591.16a1.25 1.25 0 0 1-.798-.254c-.274-.23-.47-.358-.551-.758a1.7 1.7 0 0 1 .015-.588c.07-.327-.007-.537-.238-.727-.188-.156-.426-.199-.689-.199a.6.6 0 0 1-.254-.078.253.253 0 0 1-.114-.358a1 1 0 0 1 .192-.21c.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.392.451.462.576.685.915.176.264.336.536.446.848.066.194-.02.353-.25.45"/></svg>`,
+
+        gemini: `<svg viewBox="0 0 296 298" xmlns="http://www.w3.org/2000/svg" fill="none"><mask id="gm" width="296" height="298" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#3186FF" d="M141.201 4.886c2.282-6.17 11.042-6.071 13.184.148l5.985 17.37a184.004 184.004 0 0 0 111.257 113.049l19.304 6.997c6.143 2.227 6.156 10.91.02 13.155l-19.35 7.082a184.001 184.001 0 0 0-109.495 109.385l-7.573 20.629c-2.241 6.105-10.869 6.121-13.133.025l-7.908-21.296a184 184 0 0 0-109.02-108.658l-19.698-7.239c-6.102-2.243-6.118-10.867-.025-13.132l20.083-7.467A183.998 183.998 0 0 0 133.291 26.28l7.91-21.394Z"/></mask><g mask="url(#gm)"><g filter="url(#f1)"><ellipse cx="163" cy="149" fill="#3689FF" rx="196" ry="159"/></g><g filter="url(#f2)"><ellipse cx="33.5" cy="142.5" fill="#F6C013" rx="68.5" ry="72.5"/></g><g filter="url(#f3)"><ellipse cx="19.5" cy="148.5" fill="#F6C013" rx="68.5" ry="72.5"/></g><g filter="url(#f4)"><path fill="#FA4340" d="M194 10.5C172 82.5 65.5 134.333 22.5 135L144-66l50 76.5Z"/></g><g filter="url(#f5)"><path fill="#14BB69" d="M194.5 279.5C172.5 207.5 66 155.667 23 155l121.5 201 50-76.5Z"/></g></g><defs><filter id="f1" width="464" height="390" x="-69" y="-46" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_fg" stdDeviation="18"/></filter><filter id="f2" width="265" height="273" x="-99" y="6" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_fg" stdDeviation="32"/></filter><filter id="f3" width="265" height="273" x="-113" y="12" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_fg" stdDeviation="32"/></filter><filter id="f4" width="299.5" height="329" x="-41.5" y="-130" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_fg" stdDeviation="32"/></filter><filter id="f5" width="299.5" height="329" x="-41" y="91" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_fg" stdDeviation="32"/></filter></defs></svg>`,
+
+        mistral: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 169.022 153.656"><rect fill="#000" x="122.925" y="0" width="30.731" height="30.731"/><rect fill="#F7D046" x="138.291" y="0" width="30.731" height="30.731"/><rect fill="#000" x="0" y="0" width="30.731" height="30.731"/><rect fill="#000" x="0" y="30.731" width="30.731" height="30.731"/><rect fill="#000" x="0" y="61.463" width="30.731" height="30.731"/><rect fill="#000" x="0" y="92.194" width="30.731" height="30.731"/><rect fill="#000" x="0" y="122.925" width="30.731" height="30.731"/><rect fill="#F7D046" x="15.366" y="0" width="30.731" height="30.731"/><rect fill="#F2A73B" x="138.291" y="30.731" width="30.731" height="30.731"/><rect fill="#F2A73B" x="15.366" y="30.731" width="30.731" height="30.731"/><rect fill="#000" x="92.194" y="30.731" width="30.731" height="30.731"/><rect fill="#F2A73B" x="107.56" y="30.731" width="30.731" height="30.731"/><rect fill="#F2A73B" x="46.097" y="30.731" width="30.731" height="30.731"/><rect fill="#EE792F" x="76.828" y="61.463" width="30.731" height="30.731"/><rect fill="#EE792F" x="107.56" y="61.463" width="30.731" height="30.731"/><rect fill="#EE792F" x="46.097" y="61.463" width="30.731" height="30.731"/><rect fill="#000" x="61.463" y="92.194" width="30.731" height="30.731"/><rect fill="#EB5829" x="76.828" y="92.194" width="30.731" height="30.731"/><rect fill="#EE792F" x="138.291" y="61.463" width="30.731" height="30.731"/><rect fill="#EE792F" x="15.366" y="61.463" width="30.731" height="30.731"/><rect fill="#000" x="122.925" y="92.194" width="30.731" height="30.731"/><rect fill="#EB5829" x="138.291" y="92.194" width="30.731" height="30.731"/><rect fill="#000" x="122.925" y="122.925" width="30.731" height="30.731"/><rect fill="#EB5829" x="15.366" y="92.194" width="30.731" height="30.731"/><rect fill="#EA3326" x="138.291" y="122.925" width="30.731" height="30.731"/><rect fill="#EA3326" x="15.366" y="122.925" width="30.731" height="30.731"/></svg>`,
+
+        meta: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 171" preserveAspectRatio="xMidYMid"><defs><linearGradient id="meta_a" x1="13.878%" x2="89.144%" y1="55.934%" y2="58.694%"><stop offset="0%" stop-color="#0064E1"/><stop offset="40%" stop-color="#0064E1"/><stop offset="83%" stop-color="#0073EE"/><stop offset="100%" stop-color="#0082FB"/></linearGradient><linearGradient id="meta_b" x1="54.315%" x2="54.315%" y1="82.782%" y2="39.307%"><stop offset="0%" stop-color="#0082FB"/><stop offset="100%" stop-color="#0064E0"/></linearGradient></defs><path fill="#0081FB" d="M27.651 112.136c0 9.775 2.146 17.28 4.95 21.82 3.677 5.947 9.16 8.466 14.751 8.466 7.211 0 13.808-1.79 26.52-19.372 10.185-14.092 22.186-33.874 30.26-46.275l13.675-21.01c9.499-14.591 20.493-30.811 33.1-41.806C161.196 4.985 172.298 0 183.47 0c18.758 0 36.625 10.87 50.3 31.257C248.735 53.584 256 81.707 256 110.729c0 17.253-3.4 29.93-9.187 39.946-5.591 9.686-16.488 19.363-34.818 19.363v-27.616c15.695 0 19.612-14.422 19.612-30.927 0-23.52-5.484-49.623-17.564-68.273-8.574-13.23-19.684-21.313-31.907-21.313-13.22 0-23.859 9.97-35.815 27.75-6.356 9.445-12.882 20.956-20.208 33.944l-8.066 14.289c-16.203 28.728-20.307 35.271-28.408 46.07-14.2 18.91-26.324 26.076-42.287 26.076-18.935 0-30.91-8.2-38.325-20.556C2.973 139.413 0 126.202 0 111.148l27.651.988Z"/><path fill="url(#meta_a)" d="M21.802 33.206C34.48 13.666 52.774 0 73.757 0 85.91 0 97.99 3.597 110.605 13.897c13.798 11.261 28.505 29.805 46.853 60.368l6.58 10.967c15.881 26.459 24.917 40.07 30.205 46.49 6.802 8.243 11.565 10.7 17.752 10.7 15.695 0 19.612-14.422 19.612-30.927l24.393-.766c0 17.253-3.4 29.93-9.187 39.946-5.591 9.686-16.488 19.363-34.818 19.363-11.395 0-21.49-2.475-32.654-13.007-8.582-8.083-18.615-22.443-26.334-35.352l-22.96-38.352C118.528 64.08 107.96 49.73 101.845 43.23c-6.578-6.988-15.036-15.428-28.532-15.428-10.923 0-20.2 7.666-27.963 19.39L21.802 33.206Z"/><path fill="url(#meta_b)" d="M73.312 27.802c-10.923 0-20.2 7.666-27.963 19.39-10.976 16.568-17.698 41.245-17.698 64.944 0 9.775 2.146 17.28 4.95 21.82L9.027 149.482C2.973 139.413 0 126.202 0 111.148 0 83.772 7.514 55.24 21.802 33.206 34.48 13.666 52.774 0 73.757 0l-.445 27.802Z"/></svg>`,
+
+        perplexity: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#20B2AA"><path d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z"/></svg>`,
+
+        doubao: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#3b82f6"><path d="M5.31 15.756c.172-3.75 1.883-5.999 2.549-6.739-3.26 2.058-5.425 5.658-6.358 8.308v1.12C1.501 21.513 4.226 24 7.59 24a6.59 6.59 0 002.2-.375c.353-.12.7-.248 1.039-.378.913-.899 1.65-1.91 2.243-2.992-4.877 2.431-7.974.072-7.763-4.5l.002.001z" fill-opacity=".6"/><path d="M22.57 10.283c-1.212-.901-4.109-2.404-7.397-2.8.295 3.792.093 8.766-2.1 12.773a12.782 12.782 0 01-2.244 2.992c3.764-1.448 6.746-3.457 8.596-5.219 2.82-2.683 3.353-5.178 3.361-6.66a2.737 2.737 0 00-.216-1.084v-.002zM14.303 1.867C12.955.7 11.248 0 9.39 0 7.532 0 5.883.677 4.545 1.807 2.791 3.29 1.627 5.557 1.5 8.125v9.201c.932-2.65 3.097-6.25 6.357-8.307.5-.318 1.025-.595 1.569-.829 1.883-.801 3.878-.932 5.746-.706-.222-2.83-.718-5.002-.87-5.617h.001z"/><path d="M17.305 4.961a199.47 199.47 0 01-1.08-1.094c-.202-.213-.398-.419-.586-.622l-1.333-1.378c.151.615.648 2.786.869 5.617 3.288.395 6.185 1.898 7.396 2.8-1.306-1.275-3.475-3.487-5.266-5.323z" fill-opacity=".6"/></svg>`,
+
+        qwen: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ff6a00" fill-rule="evenodd"><path d="M12.604 1.34c.393.69.784 1.382 1.174 2.075a.18.18 0 00.157.091h5.552c.174 0 .322.11.446.327l1.454 2.57c.19.337.24.478.024.837-.26.43-.513.864-.76 1.3l-.367.658c-.106.196-.223.28-.04.512l2.652 4.637c.172.301.111.494-.043.77-.437.785-.882 1.564-1.335 2.34-.159.272-.352.375-.68.37-.777-.016-1.552-.01-2.327.016a.099.099 0 00-.081.05 575.097 575.097 0 01-2.705 4.74c-.169.293-.38.363-.725.364-.997.003-2.002.004-3.017.002a.537.537 0 01-.465-.271l-1.335-2.323a.09.09 0 00-.083-.049H4.982c-.285.03-.553-.001-.805-.092l-1.603-2.77a.543.543 0 01-.002-.54l1.207-2.12a.198.198 0 000-.197 550.951 550.951 0 01-1.875-3.272l-.79-1.395c-.16-.31-.173-.496.095-.965.465-.813.927-1.625 1.387-2.436.132-.234.304-.334.584-.335a338.3 338.3 0 012.589-.001.124.124 0 00.107-.063l2.806-4.895a.488.488 0 01.422-.246c.524-.001 1.053 0 1.583-.006L11.704 1c.341-.003.724.032.9.34zm-3.432.403a.06.06 0 00-.052.03L6.254 6.788a.157.157 0 01-.135.078H3.253c-.056 0-.07.025-.041.074l5.81 10.156c.025.042.013.062-.034.063l-2.795.015a.218.218 0 00-.2.116l-1.32 2.31c-.044.078-.021.118.068.118l5.716.008c.046 0 .08.02.104.061l1.403 2.454c.046.081.092.082.139 0l5.006-8.76.783-1.382a.055.055 0 01.096 0l1.424 2.53a.122.122 0 00.107.062l2.763-.02a.04.04 0 00.035-.02.041.041 0 000-.04l-2.9-5.086a.108.108 0 010-.113l.293-.507 1.12-1.977c.024-.041.012-.062-.035-.062H9.2c-.059 0-.073-.026-.043-.077l1.434-2.505a.107.107 0 000-.114L9.225 1.774a.06.06 0 00-.053-.031zm6.29 8.02c.046 0 .058.02.034.06l-.832 1.465-2.613 4.585a.056.056 0 01-.05.029.058.058 0 01-.05-.029L8.498 9.841c-.02-.034-.01-.052.028-.054l.216-.012 6.722-.012z"/></svg>`,
+
+        copilot: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 4 43.998 40" fill="none"><path fill="url(#cop_a)" d="M34.142 7.325A4.63 4.63 0 0 0 29.7 4h-1.35a4.63 4.63 0 0 0-4.554 3.794L21.48 20.407l.575-1.965a4.63 4.63 0 0 1 4.444-3.33h7.853l3.294 1.282 3.175-1.283h-.926a4.63 4.63 0 0 1-4.443-3.325l-1.31-4.461z"/><path fill="url(#cop_b)" d="M14.33 40.656A4.63 4.63 0 0 0 18.779 44h2.87a4.63 4.63 0 0 0 4.629-4.51l.312-12.163-.654 2.233a4.63 4.63 0 0 1-4.443 3.329h-7.919l-2.823-1.532-3.057 1.532h.912a4.63 4.63 0 0 1 4.447 3.344l1.279 4.423z"/><path fill="url(#cop_c)" d="M29.5 4H13.46c-4.583 0-7.332 6.057-9.165 12.113C2.123 23.29-.72 32.885 7.503 32.885h6.925a4.63 4.63 0 0 0 4.456-3.358 2078.617 2078.617 0 0 1 4.971-17.156c.843-2.843 1.544-5.284 2.621-6.805C27.08 4.714 28.086 4 29.5 4z"/><path fill="url(#cop_d)" d="M29.5 4H13.46c-4.583 0-7.332 6.057-9.165 12.113C2.123 23.29-.72 32.885 7.503 32.885h6.925a4.63 4.63 0 0 0 4.456-3.358 2078.617 2078.617 0 0 1 4.971-17.156c.843-2.843 1.544-5.284 2.621-6.805C27.08 4.714 28.086 4 29.5 4z"/><path fill="url(#cop_e)" d="M18.498 44h16.04c4.582 0 7.332-6.058 9.165-12.115 2.171-7.177 5.013-16.775-3.208-16.775h-6.926a4.63 4.63 0 0 0-4.455 3.358 2084.036 2084.036 0 0 1-4.972 17.16c-.842 2.843-1.544 5.285-2.62 6.806-.604.852-1.61 1.566-3.024 1.566z"/><path fill="url(#cop_f)" d="M18.498 44h16.04c4.582 0 7.332-6.058 9.165-12.115 2.171-7.177 5.013-16.775-3.208-16.775h-6.926a4.63 4.63 0 0 0-4.455 3.358 2084.036 2084.036 0 0 1-4.972 17.16c-.842 2.843-1.544 5.285-2.62 6.806-.604.852-1.61 1.566-3.024 1.566z"/><defs><radialGradient id="cop_a" cx="0" cy="0" r="1" gradientTransform="matrix(-10.96051 -13.38922 12.59013 -10.30637 38.005 20.514)" gradientUnits="userSpaceOnUse"><stop offset=".096" stop-color="#00AEFF"/><stop offset=".773" stop-color="#2253CE"/><stop offset="1" stop-color="#0736C4"/></radialGradient><radialGradient id="cop_b" cx="0" cy="0" r="1" gradientTransform="rotate(51.84 -28.201 27.85) scale(15.9912 15.5119)" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB657"/><stop offset=".634" stop-color="#FF5F3D"/><stop offset=".923" stop-color="#C02B3C"/></radialGradient><radialGradient id="cop_e" cx="0" cy="0" r="1" gradientTransform="rotate(109.274 16.301 20.802) scale(38.3873 45.9867)" gradientUnits="userSpaceOnUse"><stop offset=".066" stop-color="#8C48FF"/><stop offset=".5" stop-color="#F2598A"/><stop offset=".896" stop-color="#FFB152"/></radialGradient><linearGradient id="cop_c" x1="12.5" x2="14.788" y1="7.5" y2="33.975" gradientUnits="userSpaceOnUse"><stop offset=".156" stop-color="#0D91E1"/><stop offset=".487" stop-color="#52B471"/><stop offset=".652" stop-color="#98BD42"/><stop offset=".937" stop-color="#FFC800"/></linearGradient><linearGradient id="cop_d" x1="14.5" x2="15.75" y1="4" y2="32.885" gradientUnits="userSpaceOnUse"><stop stop-color="#3DCBFF"/><stop offset=".247" stop-color="#0588F7" stop-opacity="0"/></linearGradient><linearGradient id="cop_f" x1="42.586" x2="42.569" y1="13.346" y2="21.215" gradientUnits="userSpaceOnUse"><stop offset=".058" stop-color="#F8ADFA"/><stop offset=".708" stop-color="#A86EDD" stop-opacity="0"/></linearGradient></defs></svg>`
+    };
+
+    const chatbots = [
+        {
+            id: "chatgpt", name: "ChatGPT", company: "OpenAI", location: [37.761, -122.411],
+            country: "USA", city: "San Francisco", color: "#10a37f", logo: logos.chatgpt,
+            founded: "2022", users: "300 M+", modele: "GPT-4o",
+            geopolitics: "Premier outil grand public à avoir franchi le cap du milliard d'interactions quotidiennes, ChatGPT est devenu le symbole du Soft Power technologique américain. Financé massivement par Microsoft, il incarne la stratégie d'OpenAI : imposer une norme mondiale avant que les régulateurs ne définissent les règles du jeu.",
+            atout: "Standard de facto mondial — intégré dans Office, Azure et des milliers d'API tierces"
+        },
+        {
+            id: "claude", name: "Claude", company: "Anthropic", location: [37.778, -122.415],
+            country: "USA", city: "San Francisco", color: "#d97706", logo: logos.claude,
+            founded: "2023", users: "50 M+", modele: "Claude 3.7",
+            geopolitics: "Fondée par d'anciens ingénieurs d'OpenAI soucieux d'alignement, Anthropic positionne Claude comme l'IA \"de confiance\" pour les secteurs régulés : droit, santé, finance. Sa doctrine Constitutional AI influence les débats au Congrès américain et à Bruxelles.",
+            atout: "Fenêtre de contexte record (200K tokens) — idéal pour l'analyse documentaire complexe"
+        },
+        {
+            id: "gemini", name: "Gemini", company: "Google DeepMind", location: [37.422, -122.084],
+            country: "USA", city: "Mountain View", color: "#4285F4", logo: logos.gemini,
+            founded: "2023", users: "1 Mrd+", modele: "Gemini 2.5 Pro",
+            geopolitics: "Avec 3 milliards d'appareils Android comme vecteur de déploiement natif, Google joue sur un terrain qu'aucun concurrent ne peut répliquer. L'intégration dans Search, Gmail et YouTube en fait moins un chatbot qu'une infrastructure cognitive planétaire.",
+            atout: "Déploiement natif sur Android & Google Workspace — capillarité inégalée"
+        },
+        {
+            id: "perplexity", name: "Perplexity", company: "Perplexity AI", location: [37.775, -122.395],
+            country: "USA", city: "San Francisco", color: "#20B2AA", logo: logos.perplexity,
+            founded: "2022", users: "15 M+", modele: "Multi-LLM",
+            geopolitics: "Là où Google indexe le web, Perplexity le synthétise en temps réel avec des sources citées. Ce modèle de \"réponse vérifiable\" attire une base d'utilisateurs exigeants — chercheurs, journalistes, analystes — et représente la menace la plus directe contre le moteur de recherche traditionnel.",
+            atout: "Recherche augmentée avec citations vérifiables — alternative crédible à Google Search"
+        },
+        {
+            id: "mistral", name: "Mistral", company: "Mistral AI", location: [48.856, 2.352],
+            country: "France", city: "Paris", color: "#FF4500", logo: logos.mistral,
+            founded: "2023", users: "10 M+", modele: "Mistral Large 2",
+            geopolitics: "Seul acteur européen du top 10, Mistral est devenu l'étendard de la souveraineté numérique du Vieux Continent. En publiant ses modèles en open-source, il contourne la dépendance aux GAFA tout en influençant directement la rédaction de l'AI Act européen depuis ses bureaux parisiens.",
+            atout: "Open-source & conformité RGPD native — choix stratégique des États et entreprises européens"
+        },
+        {
+            id: "meta", name: "Meta AI", company: "Meta", location: [37.484, -122.148],
+            country: "USA", city: "Menlo Park", color: "#0668E1", logo: logos.meta,
+            founded: "2023", users: "500 M+", modele: "Llama 4",
+            geopolitics: "En publiant la famille Llama en open-source, Meta a imposé une stratégie de \"commoditisation\" de l'IA : si tout le monde peut accéder aux modèles de base, la valeur se déplace vers les données propriétaires et les interfaces — là où Meta excelle avec ses 3,5 milliards d'utilisateurs actifs.",
+            atout: "Diffusion massive via WhatsApp, Instagram, Facebook — 3,5 milliards d'utilisateurs potentiels"
+        },
+        {
+            id: "deepseek", name: "DeepSeek", company: "DeepSeek-AI", location: [30.270, 120.150],
+            country: "Chine", city: "Hangzhou", color: "#4D6BFE", logo: logos.deepseek,
+            founded: "2023", users: "30 M+", modele: "DeepSeek R2",
+            geopolitics: "Créé par le hedge fund High-Flyer Capital, DeepSeek a provoqué un séisme en janvier 2025 en obtenant des performances comparables à GPT-4 pour 6 millions de dollars de budget d'entraînement — contre 100 fois plus pour ses concurrents américains. Une démonstration que les restrictions sur les puces Nvidia n'ont pas arrêté l'ingéniosité algorithmique chinoise.",
+            atout: "Efficacité d'entraînement record — remet en question la suprématie des datacenters américains"
+        },
+        {
+            id: "doubao", name: "Doubao", company: "ByteDance", location: [39.904, 116.407],
+            country: "Chine", city: "Beijing", color: "#3b82f6", logo: logos.doubao,
+            founded: "2023", users: "60 M+", modele: "Doubao Pro",
+            geopolitics: "Produit de ByteDance — la maison mère de TikTok —, Doubao est l'application IA la plus téléchargée en Chine, ciblant d'abord les étudiants et les créateurs de contenu. Son expansion internationale reste contrainte par les tensions diplomatiques, mais sa base technologique issue du recommandation engine de TikTok lui confère un avantage unique en matière de personnalisation.",
+            atout: "Recommandation ultra-personnalisée héritée de l'algorithme TikTok"
+        },
+        {
+            id: "qwen", name: "Qwen", company: "Alibaba Cloud", location: [30.245, 120.191],
+            country: "Chine", city: "Hangzhou", color: "#ff6a00", logo: logos.qwen,
+            founded: "2023", users: "40 M+", modele: "Qwen 2.5 Max",
+            geopolitics: "Bras armé IA d'Alibaba, Qwen est conçu pour irriguer un écosystème commercial sans équivalent : logistique, e-commerce, cloud industriel. Déployé dans plus de 100 pays via Alibaba Cloud, il représente la stratégie de \"Belt & Road digital\" de Pékin, étendant l'influence technologique chinoise aux marchés émergents.",
+            atout: "Intégration profonde dans l'écosystème Alibaba — e-commerce, cloud et logistique mondiale"
+        },
+        {
+            id: "copilot", name: "Copilot", company: "Microsoft", location: [47.674, -122.121],
+            country: "USA", city: "Redmond", color: "#00a4ef", logo: logos.copilot,
+            founded: "2023", users: "1 Mrd+", modele: "GPT-4o (Azure)",
+            geopolitics: "En injectant l'IA directement dans Word, Excel, Teams et GitHub, Microsoft a réalisé ce qu'aucun concurrent n'a encore accompli : monétiser l'IA auprès des entreprises à grande échelle. Avec 400 millions de licences Office dans le monde, Copilot transforme chaque abonnement Microsoft 365 en porte d'entrée vers l'IA générative.",
+            atout: "Présent sur 1,4 milliard d'appareils Windows — capillarité B2B inégalée dans l'entreprise"
+        }
+    ];
+
+    const cityCounts = {};
+    chatbots.forEach(b => { cityCounts[b.city] = (cityCounts[b.city] || 0) + 1; });
+
+    const map = L.map('map', { center: [25, 10], zoom: 2.3, minZoom: 2, zoomControl: false });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; CartoDB',
+        subdomains: 'abcd'
+    }).addTo(map);
+
+    fetch('https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson')
+        .then(res => res.json())
+        .then(data => {
+            L.geoJSON(data, {
+                style: function(feature) {
+                    const name = feature.properties.name;
+                    const isUS = name === "United States of America" || name === "United States";
+                    const isCN = name === "China";
+                    const isFR = name === "France";
+                    if (isUS) return { fillColor: "#2563eb", fillOpacity: 0.3,  color: "#1e40af", weight: 1.5 };
+                    if (isFR) return { fillColor: "#E3A535", fillOpacity: 0.45, color: "#B83A1F", weight: 2 };
+                    if (isCN) return { fillColor: "#B83A1F", fillOpacity: 0.28, color: "#7f1d1d", weight: 1.5 };
+                    return { fillColor: "#0D1617", fillOpacity: 0.04, color: "#127676", weight: 0.5 };
+                }
+            }).addTo(map);
+        });
+
+    chatbots.forEach((bot, index) => {
+        const lat = bot.location[0] + (Math.sin(index) * 0.015);
+        const lng = bot.location[1] + (Math.cos(index) * 0.015);
+        const count = cityCounts[bot.city];
+        const badgeHtml = count > 1 ? `<div class="count-badge">${count}</div>` : '';
+
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="logo-marker">${bot.logo}${badgeHtml}</div>`,
+            iconSize: [48, 48], iconAnchor: [24, 24]
+        });
+
+        L.marker([lat, lng], { icon }).addTo(map).on('click', () => showOverlay(bot, [lat, lng]));
+
+        const item = document.createElement('div');
+        item.className = 'bot-item';
+        item.innerHTML = `
+            <div class="bot-logo-wrap">${bot.logo}</div>
+            <div>
+                <div class="bot-name">${bot.name}</div>
+                <div class="bot-city">${bot.city}</div>
+            </div>`;
+        item.onclick = () => showOverlay(bot, [lat, lng]);
+        document.getElementById('bot-list').appendChild(item);
+    });
+
+    function showOverlay(bot, coords) {
+        const overlay = document.getElementById('info-overlay');
+        overlay.style.display = 'block';
+        overlay.style.borderColor = bot.color;
+
+        const tagColor = bot.country === "USA" ? "#2563eb" : (bot.country === "France" ? "#E3A535" : "#B83A1F");
+        const tagTextColor = bot.country === "France" ? "#0D1617" : "#F2EFE6";
+
+        document.getElementById('overlay-content').innerHTML = `
+            <div class="overlay-bot-header">
+                <div class="overlay-logo" style="border-color:${bot.color}">${bot.logo}</div>
+                <div>
+                    <div class="overlay-bot-name">${bot.name}</div>
+                    <div class="overlay-meta">
+                        <span class="overlay-country-tag" style="background:${tagColor};color:${tagTextColor}">${bot.country}</span>
+                        <span class="overlay-company">${bot.company}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay-stats">
+                <div class="overlay-stat">
+                    <div class="overlay-stat-label">Lancé</div>
+                    <div class="overlay-stat-value">${bot.founded}</div>
+                </div>
+                <div class="overlay-stat">
+                    <div class="overlay-stat-label">Utilisateurs</div>
+                    <div class="overlay-stat-value">${bot.users}</div>
+                </div>
+                <div class="overlay-stat">
+                    <div class="overlay-stat-label">Modèle</div>
+                    <div class="overlay-stat-value" style="font-size:0.65rem;font-family:'Oswald',sans-serif;letter-spacing:0.04em">${bot.modele}</div>
+                </div>
+            </div>
+
+            <div class="overlay-geo-block">
+                <div class="overlay-geo-label">◆ Axe Géopolitique</div>
+                <div class="overlay-geo-text">${bot.geopolitics}</div>
+            </div>
+
+            <div class="overlay-atout">
+                <div class="overlay-atout-label">✦ Atout Clef</div>
+                <div class="overlay-atout-text">${bot.atout}</div>
+            </div>
+
+            <button class="overlay-close-btn" onclick="closeOverlay()">◀ Fermer</button>
+        `;
+
+        map.flyTo(coords, 11, { duration: 1.2 });
+    }
+
+    function closeOverlay() {
+        document.getElementById('info-overlay').style.display = 'none';
+        map.flyTo([25, 10], 2.3, { duration: 1.2 });
+    }
+</script>
+</body>
+</html>
