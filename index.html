@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Géopolitique de l'IA : Les 10 Leaders Mondiaux</title>
+    <title>Géopolitique de l'IA : qui fabrique ces machines</title>
+    <meta name="description" content="Carte des principaux assistants d'IA et de leurs alternatives européennes : d'où ils viennent, sur quels modèles ils reposent, et ce qu'ils font des données qu'on leur confie.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23127676'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23E4632E' stroke-width='2.5'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -149,9 +151,10 @@
         .panel-title .ornament { color: var(--orange); font-size: 1.2rem; }
 
         /* ── Bot list ── */
+        /* Hauteur libre : en projection, une liste qui défile cache des acteurs au formateur. */
         .bot-list-wrap {
-            height: 420px;
-            overflow-y: auto;
+            height: auto;
+            overflow-y: visible;
         }
         .bot-list-wrap::-webkit-scrollbar { width: 4px; }
         .bot-list-wrap::-webkit-scrollbar-thumb { background: var(--teal); }
@@ -193,6 +196,21 @@
             text-transform: uppercase;
             color: var(--teal);
             opacity: 0.8;
+        }
+        /* Pastille de régime de données, alignée à droite de chaque ligne. */
+        .bot-regime {
+            margin-left: auto;
+            font-size: 1rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        /* Ce bloc vit sur le fond sombre du panneau : le texte doit être clair. */
+        .rappel {
+            font-size: 0.82rem;
+            line-height: 1.55;
+            color: var(--paper);
+            opacity: 0.92;
         }
 
         /* ── Power blocs panel ── */
@@ -253,8 +271,12 @@
             border: 3px solid var(--teal);
             box-shadow: var(--shadow);
         }
+        /* La colonne de gauche est plus haute que la carte : on la fait suivre au défilement
+           pour qu'un clic dans les listes reste toujours visible sur la carte. */
         .map-wrapper {
-            position: relative;
+            position: sticky;
+            top: 20px;
+            align-self: start;
         }
         .map-frame-label {
             position: absolute;
@@ -344,6 +366,8 @@
         }
         .overlay-stat {
             flex: 1;
+            min-width: 0;
+            overflow-wrap: anywhere;
             background: var(--ink);
             padding: 8px 10px;
             text-align: center;
@@ -385,6 +409,82 @@
             line-height: 1.45;
             font-weight: 500;
         }
+
+        /* ── Gouvernance des données, statut, sources ── */
+        .overlay-stat-value.petit {
+            font-size: 0.62rem;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.04em;
+            line-height: 1.3;
+        }
+
+        .overlay-statut {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 2px 8px;
+            border: 1px solid;
+            border-radius: 2px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .overlay-donnees {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-left: 4px solid;
+            background: rgba(13,22,23,0.04);
+        }
+        .overlay-donnees-titre {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .overlay-donnees-texte {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+        .overlay-donnees-lieu {
+            margin-top: 5px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            color: var(--teal);
+        }
+
+        .overlay-sources {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(18,118,118,0.4);
+        }
+        .overlay-sources-label {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.58rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 5px;
+        }
+        .overlay-sources ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+        .overlay-sources li {
+            font-size: 0.74rem;
+            line-height: 1.45;
+            margin-bottom: 3px;
+        }
+        .overlay-sources a {
+            color: var(--orange);
+            text-decoration: underline;
+        }
+        .overlay-sources a:hover { color: var(--red); }
 
         .overlay-close {
             position: absolute;
@@ -519,9 +619,9 @@
 
     <!-- Header -->
     <header>
-        <div class="header-eyebrow">Cartographie · Intelligence Artificielle · 2026</div>
-        <h1>Géopolitique de l'IA :<br><span class="accent">Le Nouveau Top 10</span></h1>
-        <p class="subtitle">Leaders mondiaux — Densité des hubs technologiques</p>
+        <div class="header-eyebrow">Cartographie · Intelligence artificielle · août 2026</div>
+        <h1>Géopolitique de l'IA :<br><span class="accent">qui fabrique ces machines</span></h1>
+        <p class="subtitle">D'où viennent les assistants, et où vont les données qu'on leur confie</p>
     </header>
 
     <!-- Main grid -->
@@ -531,33 +631,50 @@
         <div>
             <div class="retro-panel">
                 <div class="panel-title">
-                    <span class="ornament">❧</span> Top 10 Actualisé
+                    <span class="ornament">❧</span> Les dominants
                 </div>
                 <div class="bot-list-wrap" id="bot-list"></div>
             </div>
 
+            <div class="retro-panel">
+                <div class="panel-title">
+                    <span class="ornament">❧</span> Les alternatives européennes
+                </div>
+                <div class="bot-list-wrap" id="alt-list"></div>
+            </div>
+
             <div class="blocs-panel">
-                <div class="blocs-title">◆ Blocs de Puissance ◆</div>
+                <div class="blocs-title">◆ Ce qu'ils font de vos données ◆</div>
                 <div class="bloc-item">
-                    <div class="bloc-swatch" style="background:#2563eb; box-shadow: 0 0 8px rgba(37,99,235,0.5);"></div>
+                    <div class="bloc-swatch" style="background:#B83A1F; box-shadow: 0 0 8px rgba(184,58,31,0.5);"></div>
                     <div>
-                        <div class="bloc-label">États-Unis</div>
-                        <div class="bloc-sub">Hub dominant — Silicon Valley</div>
+                        <div class="bloc-label">⚠ Vos échanges entraînent le modèle</div>
+                        <div class="bloc-sub">Parfois désactivable, parfois non</div>
                     </div>
                 </div>
                 <div class="bloc-item">
-                    <div class="bloc-swatch" style="background:#E3A535; box-shadow: 0 0 8px rgba(227,165,53,0.5);"></div>
+                    <div class="bloc-swatch" style="background:#127676; box-shadow: 0 0 8px rgba(18,118,118,0.5);"></div>
                     <div>
-                        <div class="bloc-label">France</div>
-                        <div class="bloc-sub">Souveraineté — Paris AI Hub</div>
+                        <div class="bloc-label">○ Pas d'entraînement sur vos données</div>
+                        <div class="bloc-sub">Contrat professionnel ou politique de l'éditeur</div>
                     </div>
                 </div>
                 <div class="bloc-item" style="margin-bottom:0">
-                    <div class="bloc-swatch" style="background:#B83A1F; box-shadow: 0 0 8px rgba(184,58,31,0.5);"></div>
+                    <div class="bloc-swatch" style="background:#1d7a4c; box-shadow: 0 0 8px rgba(29,122,76,0.5);"></div>
                     <div>
-                        <div class="bloc-label">Chine</div>
-                        <div class="bloc-sub">Challenger — Hangzhou / Pékin</div>
+                        <div class="bloc-label">● Chiffré, l'éditeur n'y accède pas</div>
+                        <div class="bloc-sub">Il ne peut pas lire, même s'il le voulait</div>
                     </div>
+                </div>
+            </div>
+
+            <div class="blocs-panel">
+                <div class="blocs-title">◆ La question à emporter ◆</div>
+                <div class="rappel">
+                    Un modèle n'est jamais neutre : il est le produit d'une langue, d'un marché
+                    et d'un droit national. La vraie question n'est donc pas de savoir lequel est
+                    le meilleur, mais celle-ci. Quand j'utilise un outil, à qui est-ce que je donne
+                    de l'information ?
                 </div>
             </div>
         </div>
@@ -600,78 +717,274 @@
         copilot: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 4 43.998 40" fill="none"><path fill="url(#cop_a)" d="M34.142 7.325A4.63 4.63 0 0 0 29.7 4h-1.35a4.63 4.63 0 0 0-4.554 3.794L21.48 20.407l.575-1.965a4.63 4.63 0 0 1 4.444-3.33h7.853l3.294 1.282 3.175-1.283h-.926a4.63 4.63 0 0 1-4.443-3.325l-1.31-4.461z"/><path fill="url(#cop_b)" d="M14.33 40.656A4.63 4.63 0 0 0 18.779 44h2.87a4.63 4.63 0 0 0 4.629-4.51l.312-12.163-.654 2.233a4.63 4.63 0 0 1-4.443 3.329h-7.919l-2.823-1.532-3.057 1.532h.912a4.63 4.63 0 0 1 4.447 3.344l1.279 4.423z"/><path fill="url(#cop_c)" d="M29.5 4H13.46c-4.583 0-7.332 6.057-9.165 12.113C2.123 23.29-.72 32.885 7.503 32.885h6.925a4.63 4.63 0 0 0 4.456-3.358 2078.617 2078.617 0 0 1 4.971-17.156c.843-2.843 1.544-5.284 2.621-6.805C27.08 4.714 28.086 4 29.5 4z"/><path fill="url(#cop_d)" d="M29.5 4H13.46c-4.583 0-7.332 6.057-9.165 12.113C2.123 23.29-.72 32.885 7.503 32.885h6.925a4.63 4.63 0 0 0 4.456-3.358 2078.617 2078.617 0 0 1 4.971-17.156c.843-2.843 1.544-5.284 2.621-6.805C27.08 4.714 28.086 4 29.5 4z"/><path fill="url(#cop_e)" d="M18.498 44h16.04c4.582 0 7.332-6.058 9.165-12.115 2.171-7.177 5.013-16.775-3.208-16.775h-6.926a4.63 4.63 0 0 0-4.455 3.358 2084.036 2084.036 0 0 1-4.972 17.16c-.842 2.843-1.544 5.285-2.62 6.806-.604.852-1.61 1.566-3.024 1.566z"/><path fill="url(#cop_f)" d="M18.498 44h16.04c4.582 0 7.332-6.058 9.165-12.115 2.171-7.177 5.013-16.775-3.208-16.775h-6.926a4.63 4.63 0 0 0-4.455 3.358 2084.036 2084.036 0 0 1-4.972 17.16c-.842 2.843-1.544 5.285-2.62 6.806-.604.852-1.61 1.566-3.024 1.566z"/><defs><radialGradient id="cop_a" cx="0" cy="0" r="1" gradientTransform="matrix(-10.96051 -13.38922 12.59013 -10.30637 38.005 20.514)" gradientUnits="userSpaceOnUse"><stop offset=".096" stop-color="#00AEFF"/><stop offset=".773" stop-color="#2253CE"/><stop offset="1" stop-color="#0736C4"/></radialGradient><radialGradient id="cop_b" cx="0" cy="0" r="1" gradientTransform="rotate(51.84 -28.201 27.85) scale(15.9912 15.5119)" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB657"/><stop offset=".634" stop-color="#FF5F3D"/><stop offset=".923" stop-color="#C02B3C"/></radialGradient><radialGradient id="cop_e" cx="0" cy="0" r="1" gradientTransform="rotate(109.274 16.301 20.802) scale(38.3873 45.9867)" gradientUnits="userSpaceOnUse"><stop offset=".066" stop-color="#8C48FF"/><stop offset=".5" stop-color="#F2598A"/><stop offset=".896" stop-color="#FFB152"/></radialGradient><linearGradient id="cop_c" x1="12.5" x2="14.788" y1="7.5" y2="33.975" gradientUnits="userSpaceOnUse"><stop offset=".156" stop-color="#0D91E1"/><stop offset=".487" stop-color="#52B471"/><stop offset=".652" stop-color="#98BD42"/><stop offset=".937" stop-color="#FFC800"/></linearGradient><linearGradient id="cop_d" x1="14.5" x2="15.75" y1="4" y2="32.885" gradientUnits="userSpaceOnUse"><stop stop-color="#3DCBFF"/><stop offset=".247" stop-color="#0588F7" stop-opacity="0"/></linearGradient><linearGradient id="cop_f" x1="42.586" x2="42.569" y1="13.346" y2="21.215" gradientUnits="userSpaceOnUse"><stop offset=".058" stop-color="#F8ADFA"/><stop offset=".708" stop-color="#A86EDD" stop-opacity="0"/></linearGradient></defs></svg>`
     };
 
+    // Monogramme de secours pour les acteurs dont on n'embarque pas le logo officiel.
+    const mono = (lettre, couleur) => `<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="21" fill="${couleur}"/>
+        <circle cx="24" cy="24" r="21" fill="none" stroke="#0D1617" stroke-width="1.5"/>
+        <text x="24" y="32" text-anchor="middle" font-family="Oswald, sans-serif" font-size="22"
+              font-weight="600" fill="#F2EFE6">${lettre}</text>
+    </svg>`;
+
+    // Niveaux de gouvernance des données. L'ordre va du plus exposé au plus protégé.
+    const REGIMES = {
+        entraine: { pastille: "⚠", label: "Vos échanges entraînent le modèle", teinte: "#B83A1F" },
+        chine:    { pastille: "⚠", label: "Données stockées en Chine, sans retrait possible", teinte: "#7f1d1d" },
+        protege:  { pastille: "○", label: "Pas d'entraînement sur vos données", teinte: "#127676" },
+        chiffre:  { pastille: "●", label: "Chiffré, l'éditeur n'y accède pas", teinte: "#1d7a4c" }
+    };
+
     const chatbots = [
         {
             id: "chatgpt", name: "ChatGPT", company: "OpenAI", location: [37.761, -122.411],
             country: "USA", city: "San Francisco", color: "#10a37f", logo: logos.chatgpt,
-            founded: "2022", users: "300 M+", modele: "GPT-4o",
-            geopolitics: "Premier outil grand public à avoir franchi le cap du milliard d'interactions quotidiennes, ChatGPT est devenu le symbole du Soft Power technologique américain. Financé massivement par Microsoft, il incarne la stratégie d'OpenAI : imposer une norme mondiale avant que les régulateurs ne définissent les règles du jeu.",
-            atout: "Standard de facto mondial — intégré dans Office, Azure et des milliers d'API tierces"
+            section: "dominant", founded: "2022", modele: "GPT-5.6 (Sol, Terra, Luna)",
+            hebergement: "États-Unis", ouverture: "Fermé", acces: "Gratuit, avec abonnements payants",
+            regime: "entraine",
+            donnees: "Par défaut, vos conversations servent à entraîner le modèle. On coupe cela dans Réglages, Contrôles des données, en désactivant « Improve the model for everyone ». Le chat temporaire n'entraîne pas non plus.",
+            geopolitics: "ChatGPT reste l'outil qui a fait entrer l'IA générative dans le langage courant, et il sert de norme de fait à laquelle tous les autres se comparent. La stratégie d'OpenAI n'a pas varié : imposer un standard mondial plus vite que les régulateurs ne définissent les règles. En août 2026, la maison a rebattu ses noms de modèles, la génération étant désormais indiquée par le chiffre et le niveau de capacité par un nom propre, Sol, Terra ou Luna.",
+            atout: "Standard de fait, présent dans des milliers d'applications tierces par son interface de programmation",
+            sources: [
+                { label: "OpenAI, comment vos données servent à améliorer les modèles", url: "https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/" },
+                { label: "OpenAI, présentation de GPT-5.6 Sol", url: "https://openai.com/index/previewing-gpt-5-6-sol/" }
+            ]
         },
         {
             id: "claude", name: "Claude", company: "Anthropic", location: [37.778, -122.415],
             country: "USA", city: "San Francisco", color: "#d97706", logo: logos.claude,
-            founded: "2023", users: "50 M+", modele: "Claude 3.7",
-            geopolitics: "Fondée par d'anciens ingénieurs d'OpenAI soucieux d'alignement, Anthropic positionne Claude comme l'IA \"de confiance\" pour les secteurs régulés : droit, santé, finance. Sa doctrine Constitutional AI influence les débats au Congrès américain et à Bruxelles.",
-            atout: "Fenêtre de contexte record (200K tokens) — idéal pour l'analyse documentaire complexe"
+            section: "dominant", founded: "2023", modele: "Famille Claude 5 (Opus, Sonnet)",
+            hebergement: "États-Unis", ouverture: "Fermé", acces: "Gratuit, avec abonnements payants",
+            regime: "entraine",
+            donnees: "Depuis 2025, un choix explicite est demandé à l'inscription. Si vous acceptez, les conversations entraînent le modèle et sont conservées cinq ans. Si vous refusez, elles le sont trente jours et n'entraînent rien. Les offres professionnelles et l'interface de programmation ne relèvent pas de ce régime.",
+            geopolitics: "Fondée par d'anciens d'OpenAI en désaccord sur la sécurité, Anthropic vise les secteurs régulés, le droit, la santé, la finance, et fait de la prudence un argument commercial. Sa position s'est renforcée d'un cran en 2026 quand Microsoft a intégré ses modèles dans Copilot, ce qui la place à la fois en concurrente et en fournisseuse de son principal rival.",
+            atout: "Positionnement sur la fiabilité et l'analyse documentaire longue",
+            sources: [
+                { label: "Anthropic, mise à jour des conditions grand public", url: "https://www.anthropic.com/news/updates-to-our-consumer-terms" }
+            ]
         },
         {
             id: "gemini", name: "Gemini", company: "Google DeepMind", location: [37.422, -122.084],
             country: "USA", city: "Mountain View", color: "#4285F4", logo: logos.gemini,
-            founded: "2023", users: "1 Mrd+", modele: "Gemini 2.5 Pro",
-            geopolitics: "Avec 3 milliards d'appareils Android comme vecteur de déploiement natif, Google joue sur un terrain qu'aucun concurrent ne peut répliquer. L'intégration dans Search, Gmail et YouTube en fait moins un chatbot qu'une infrastructure cognitive planétaire.",
-            atout: "Déploiement natif sur Android & Google Workspace — capillarité inégalée"
-        },
-        {
-            id: "perplexity", name: "Perplexity", company: "Perplexity AI", location: [37.775, -122.395],
-            country: "USA", city: "San Francisco", color: "#20B2AA", logo: logos.perplexity,
-            founded: "2022", users: "15 M+", modele: "Multi-LLM",
-            geopolitics: "Là où Google indexe le web, Perplexity le synthétise en temps réel avec des sources citées. Ce modèle de \"réponse vérifiable\" attire une base d'utilisateurs exigeants — chercheurs, journalistes, analystes — et représente la menace la plus directe contre le moteur de recherche traditionnel.",
-            atout: "Recherche augmentée avec citations vérifiables — alternative crédible à Google Search"
-        },
-        {
-            id: "mistral", name: "Mistral", company: "Mistral AI", location: [48.856, 2.352],
-            country: "France", city: "Paris", color: "#FF4500", logo: logos.mistral,
-            founded: "2023", users: "10 M+", modele: "Mistral Large 2",
-            geopolitics: "Seul acteur européen du top 10, Mistral est devenu l'étendard de la souveraineté numérique du Vieux Continent. En publiant ses modèles en open-source, il contourne la dépendance aux GAFA tout en influençant directement la rédaction de l'AI Act européen depuis ses bureaux parisiens.",
-            atout: "Open-source & conformité RGPD native — choix stratégique des États et entreprises européens"
-        },
-        {
-            id: "meta", name: "Meta AI", company: "Meta", location: [37.484, -122.148],
-            country: "USA", city: "Menlo Park", color: "#0668E1", logo: logos.meta,
-            founded: "2023", users: "500 M+", modele: "Llama 4",
-            geopolitics: "En publiant la famille Llama en open-source, Meta a imposé une stratégie de \"commoditisation\" de l'IA : si tout le monde peut accéder aux modèles de base, la valeur se déplace vers les données propriétaires et les interfaces — là où Meta excelle avec ses 3,5 milliards d'utilisateurs actifs.",
-            atout: "Diffusion massive via WhatsApp, Instagram, Facebook — 3,5 milliards d'utilisateurs potentiels"
-        },
-        {
-            id: "deepseek", name: "DeepSeek", company: "DeepSeek-AI", location: [30.270, 120.150],
-            country: "Chine", city: "Hangzhou", color: "#4D6BFE", logo: logos.deepseek,
-            founded: "2023", users: "30 M+", modele: "DeepSeek R2",
-            geopolitics: "Créé par le hedge fund High-Flyer Capital, DeepSeek a provoqué un séisme en janvier 2025 en obtenant des performances comparables à GPT-4 pour 6 millions de dollars de budget d'entraînement — contre 100 fois plus pour ses concurrents américains. Une démonstration que les restrictions sur les puces Nvidia n'ont pas arrêté l'ingéniosité algorithmique chinoise.",
-            atout: "Efficacité d'entraînement record — remet en question la suprématie des datacenters américains"
-        },
-        {
-            id: "doubao", name: "Doubao", company: "ByteDance", location: [39.904, 116.407],
-            country: "Chine", city: "Beijing", color: "#3b82f6", logo: logos.doubao,
-            founded: "2023", users: "60 M+", modele: "Doubao Pro",
-            geopolitics: "Produit de ByteDance — la maison mère de TikTok —, Doubao est l'application IA la plus téléchargée en Chine, ciblant d'abord les étudiants et les créateurs de contenu. Son expansion internationale reste contrainte par les tensions diplomatiques, mais sa base technologique issue du recommandation engine de TikTok lui confère un avantage unique en matière de personnalisation.",
-            atout: "Recommandation ultra-personnalisée héritée de l'algorithme TikTok"
-        },
-        {
-            id: "qwen", name: "Qwen", company: "Alibaba Cloud", location: [30.245, 120.191],
-            country: "Chine", city: "Hangzhou", color: "#ff6a00", logo: logos.qwen,
-            founded: "2023", users: "40 M+", modele: "Qwen 2.5 Max",
-            geopolitics: "Bras armé IA d'Alibaba, Qwen est conçu pour irriguer un écosystème commercial sans équivalent : logistique, e-commerce, cloud industriel. Déployé dans plus de 100 pays via Alibaba Cloud, il représente la stratégie de \"Belt & Road digital\" de Pékin, étendant l'influence technologique chinoise aux marchés émergents.",
-            atout: "Intégration profonde dans l'écosystème Alibaba — e-commerce, cloud et logistique mondiale"
+            section: "dominant", founded: "2023", modele: "Gemini 3.1 Pro, 3.6 Flash",
+            hebergement: "États-Unis", ouverture: "Fermé", acces: "Gratuit, avec abonnements payants",
+            regime: "entraine",
+            donnees: "Un échantillon de conversations est relu par des personnes, pour corriger les réponses de mauvaise qualité. Ces échanges sont dissociés du compte et conservés jusqu'à trois ans. On l'arrête en désactivant l'activité des applications Gemini.",
+            geopolitics: "Aucun concurrent ne dispose du même véhicule de diffusion : Android, la recherche, Gmail, YouTube. Gemini est donc moins un produit qu'une couche ajoutée à des outils déjà universels, ce qui déplace la question du choix. On choisit ChatGPT, on rencontre Gemini sans l'avoir demandé.",
+            atout: "Déploiement natif sur Android et Google Workspace",
+            sources: [
+                { label: "Google, centre de confidentialité des applications Gemini", url: "https://support.google.com/gemini/answer/13594961?hl=fr" },
+                { label: "Google, annonce de Gemini 3", url: "https://blog.google/products-and-platforms/products/gemini/gemini-3/" }
+            ]
         },
         {
             id: "copilot", name: "Copilot", company: "Microsoft", location: [47.674, -122.121],
             country: "USA", city: "Redmond", color: "#00a4ef", logo: logos.copilot,
-            founded: "2023", users: "1 Mrd+", modele: "GPT-4o (Azure)",
-            geopolitics: "En injectant l'IA directement dans Word, Excel, Teams et GitHub, Microsoft a réalisé ce qu'aucun concurrent n'a encore accompli : monétiser l'IA auprès des entreprises à grande échelle. Avec 400 millions de licences Office dans le monde, Copilot transforme chaque abonnement Microsoft 365 en porte d'entrée vers l'IA générative.",
-            atout: "Présent sur 1,4 milliard d'appareils Windows — capillarité B2B inégalée dans l'entreprise"
+            section: "dominant", founded: "2023", modele: "GPT (OpenAI), Claude (Anthropic)",
+            hebergement: "Frontière de service Microsoft 365", ouverture: "Fermé", acces: "Licence d'entreprise",
+            regime: "protege",
+            donnees: "Sous licence Microsoft 365, les requêtes, les documents consultés et les réponses restent dans la frontière de service du client et n'entraînent aucun modèle de fondation. Ils ne sont pas transmis à OpenAI. Le cloisonnement entre organisations est assuré par les mêmes droits d'accès que le reste de Microsoft 365.",
+            geopolitics: "Copilot est le seul de la liste que l'on rencontre d'abord au travail, parce qu'un service informatique l'a déployé. Sa particularité est de ne pas fabriquer ses propres modèles : il loue ceux d'autrui. Depuis 2026, Microsoft y ajoute Claude aux côtés de GPT, et Anthropic figure comme sous-traitant. Dans l'Union européenne et l'AELE, ce recours à Anthropic est désactivé par défaut et demande une décision explicite de l'administrateur.",
+            atout: "Accès aux documents de l'organisation, en respectant les droits de chacun",
+            sources: [
+                { label: "Microsoft, données, confidentialité et sécurité de Copilot", url: "https://learn.microsoft.com/fr-fr/copilot/microsoft-365/microsoft-365-copilot-privacy" },
+                { label: "Microsoft, modèles Anthropic dans les applications Microsoft 365", url: "https://learn.microsoft.com/en-us/microsoft-365/copilot/copilot-anthropic-apps" }
+            ]
+        },
+        {
+            id: "meta", name: "Meta AI", company: "Meta", location: [37.484, -122.148],
+            country: "USA", city: "Menlo Park", color: "#0668E1", logo: logos.meta,
+            section: "dominant", founded: "2023", modele: "Llama",
+            hebergement: "États-Unis", ouverture: "Poids ouverts", acces: "Gratuit, intégré aux applications Meta",
+            regime: "entraine",
+            donnees: "Les échanges avec l'assistant servent à personnaliser l'expérience et à améliorer l'IA de Meta, avec les informations qui rendent la réponse pertinente, centres d'intérêt, position, profil. Les conversations vocales sont conservées jusqu'à un an et peuvent être relues par des personnes, sauf si l'enregistrement est désactivé.",
+            geopolitics: "En publiant les poids de Llama, Meta a rendu la brique de base presque gratuite, et déplacé la valeur vers ce qu'elle détient déjà, les données de ses réseaux et les interfaces où vivent ses utilisateurs. La stratégie n'est pas philanthropique : elle assèche l'avantage commercial des modèles fermés de ses concurrents.",
+            atout: "Diffusion par WhatsApp, Instagram et Messenger, sans installation",
+            sources: [
+                { label: "Meta, usage des informations pour les modèles génératifs", url: "https://www.facebook.com/privacy/genai" }
+            ]
+        },
+        {
+            id: "perplexity", name: "Perplexity", company: "Perplexity AI", location: [37.775, -122.395],
+            country: "USA", city: "San Francisco", color: "#20B2AA", logo: logos.perplexity,
+            section: "dominant", founded: "2022", modele: "Modèles de tiers",
+            hebergement: "États-Unis", ouverture: "Fermé", acces: "Gratuit, avec abonnements payants",
+            regime: "entraine",
+            donnees: "Les échanges peuvent servir à améliorer les modèles, sauf retrait dans les réglages ou usage du mode privé. Les conversations supprimées sont conservées trente jours. Les contrats d'entreprise prévoient l'absence d'entraînement.",
+            geopolitics: "Perplexity ne fabrique pas de modèle, il en oriente d'autres et rend la réponse vérifiable en citant ses sources. C'est la contestation la plus directe du moteur de recherche classique, et le point où la bataille de l'IA rejoint celle de l'accès à l'information et des revenus publicitaires qui en dépendent.",
+            atout: "Réponses accompagnées de leurs sources, vérifiables une par une",
+            sources: [
+                { label: "Perplexity, politique de confidentialité", url: "https://www.perplexity.ai/hub/legal/privacy-policy" }
+            ]
+        },
+        {
+            id: "mistral", name: "Vibe", company: "Mistral AI", location: [48.856, 2.352],
+            country: "France", city: "Paris", color: "#FF4500", logo: logos.mistral,
+            section: "dominant", founded: "2023", modele: "Modèles Mistral",
+            hebergement: "France et Luxembourg", ouverture: "Plusieurs modèles ouverts", acces: "Gratuit, avec abonnements payants",
+            regime: "entraine",
+            donnees: "Dans l'offre gratuite, les conversations peuvent servir à améliorer les modèles, le consentement étant retirable à tout moment. Dans les offres Pro, Team et Enterprise, elles ne servent pas à l'entraînement par défaut.",
+            geopolitics: "Mistral est le seul européen à jouer dans la cour des dominants, et il sert d'argument à toute la politique de souveraineté numérique du continent. Le 28 mai 2026, Le Chat a été renommé Vibe et fusionné avec l'agent de code : le nom français a été abandonné au moment précis où le produit visait le marché mondial, ce qui en dit long sur le prix de la souveraineté quand il faut vendre hors d'Europe.",
+            atout: "Traitement en Europe et conformité au RGPD pensée dès l'origine",
+            sources: [
+                { label: "Mistral, confidentialité et contrôle des données", url: "https://docs.mistral.ai/fr/admin/monitor-comply/privacy-data-controls" },
+                { label: "MacGeneration, Le Chat devient Vibe", url: "https://www.macg.co/intelligence-artificielle/2026/05/oubliez-le-chat-le-chatbot-de-mistral-devient-vibe-et-gagne-de-nouveaux-outils-308851" }
+            ]
+        },
+        {
+            id: "deepseek", name: "DeepSeek", company: "DeepSeek-AI", location: [30.270, 120.150],
+            country: "Chine", city: "Hangzhou", color: "#4D6BFE", logo: logos.deepseek,
+            section: "dominant", founded: "2023", modele: "DeepSeek V3.2, avec raisonnement R2",
+            hebergement: "Chine", ouverture: "Poids ouverts", acces: "Gratuit",
+            regime: "chine",
+            donnees: "La politique de confidentialité prévoit la collecte, le traitement et le stockage des données personnelles en Chine populaire, et leur usage pour entraîner et améliorer les modèles. Aucun réglage de retrait n'est proposé, et supprimer une conversation ne la retire pas des entraînements déjà faits.",
+            geopolitics: "DeepSeek a provoqué un choc en janvier 2025 en atteignant le niveau des meilleurs modèles américains pour une fraction de leur budget d'entraînement, démontrant que les restrictions américaines sur les puces n'avaient pas suffi. Ses poids étant publiés, n'importe qui peut faire tourner le modèle sur ses propres serveurs : utiliser DeepSeek et utiliser deepseek.com sont deux gestes très différents.",
+            atout: "Poids publiés, donc exécutables hors de Chine sur une infrastructure que l'on contrôle",
+            sources: [
+                { label: "DeepSeek, politique de confidentialité", url: "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html" }
+            ]
+        },
+        {
+            id: "qwen", name: "Qwen", company: "Alibaba Cloud", location: [30.245, 120.191],
+            country: "Chine", city: "Hangzhou", color: "#ff6a00", logo: logos.qwen,
+            section: "dominant", founded: "2023", modele: "Qwen3-Max",
+            hebergement: "Chine", ouverture: "Poids ouverts", acces: "Gratuit",
+            regime: "chine",
+            donnees: "Données traitées et stockées en Chine, sous droit chinois. Comme pour les autres services du pays, le cadre légal impose la remise des données aux autorités qui en font la demande.",
+            geopolitics: "Qwen est le bras IA d'Alibaba, pensé pour irriguer un écosystème de commerce, de logistique et de cloud déployé bien au-delà de la Chine. Ses poids ouverts en font le moteur discret de nombreux produits occidentaux qui ne le mentionnent pas, ce qui rend la question de l'origine plus difficile à trancher qu'il n'y paraît.",
+            atout: "Modèle ouvert très diffusé, y compris chez des éditeurs européens",
+            sources: [
+                { label: "Alibaba Cloud, conditions et confidentialité de Qwen", url: "https://www.alibabacloud.com/help/en/model-studio/" }
+            ]
+        },
+        {
+            id: "doubao", name: "Doubao", company: "ByteDance", location: [39.904, 116.407],
+            country: "Chine", city: "Pékin", color: "#3b82f6", logo: logos.doubao,
+            section: "dominant", founded: "2023", modele: "Doubao Seed",
+            hebergement: "Chine", ouverture: "Fermé", acces: "Gratuit, principalement en Chine",
+            regime: "chine",
+            donnees: "Données traitées et stockées en Chine, sous droit chinois, selon la politique de confidentialité de ByteDance.",
+            geopolitics: "Doubao appartient à ByteDance, la maison mère de TikTok, et domine le marché intérieur chinois sans percer à l'international, freiné par les mêmes tensions diplomatiques que son aîné. Il hérite du moteur de recommandation de TikTok, ce qui en fait le plus personnalisé des assistants de cette liste, et le plus instructif sur ce que la personnalisation exige de données.",
+            atout: "Personnalisation héritée du moteur de recommandation de TikTok",
+            sources: [
+                { label: "ByteDance, politique de confidentialité de Doubao", url: "https://www.doubao.com/" }
+            ]
+        },
+        {
+            id: "lumo", name: "Lumo", company: "Proton", location: [46.204, 6.143],
+            country: "Suisse", city: "Genève", color: "#6d4aff", logo: mono("L", "#6d4aff"),
+            section: "alternative", statut: "accessible", founded: "2025",
+            modele: "Qwen 3.5, GLM 5.2",
+            hebergement: "Serveurs contrôlés par Proton, en Europe", ouverture: "Code de l'application ouvert",
+            acces: "Gratuit, avec une offre payante",
+            regime: "chiffre",
+            donnees: "Les conversations sont stockées avec un chiffrement à accès nul, ce qui signifie que Proton ne peut pas les lire. L'éditeur indique ne pas journaliser les échanges et ne jamais s'en servir pour entraîner les modèles.",
+            geopolitics: "Lumo est la démonstration la plus nette que la souveraineté se joue à deux étages qu'on confond souvent. L'hébergement est suisse et européen, le chiffrement empêche l'éditeur lui-même de lire vos échanges, mais les modèles qui tournent sur ces serveurs sont Qwen d'Alibaba et GLM de Zhipu, deux modèles ouverts venus de Chine. Choisir un outil européen ne garantit donc pas un modèle européen : cela garantit qui détient vos données, ce qui n'est pas la même promesse.",
+            atout: "Le seul de cette carte où l'éditeur est techniquement incapable de lire vos conversations",
+            sources: [
+                { label: "Proton, confidentialité de Lumo et modèles utilisés", url: "https://proton.me/support/lumo-privacy" },
+                { label: "Proton, présentation de Lumo", url: "https://proton.me/lumo" }
+            ]
+        },
+        {
+            id: "euria", name: "Euria", company: "Infomaniak", location: [46.194, 6.130],
+            country: "Suisse", city: "Genève", color: "#0098ff", logo: mono("E", "#0098ff"),
+            section: "alternative", statut: "accessible", founded: "2025",
+            modele: "Modèles ouverts",
+            hebergement: "Suisse exclusivement", ouverture: "Modèles ouverts et auditables",
+            acces: "Gratuit",
+            regime: "protege",
+            donnees: "Traitement, stockage et hébergement se font uniquement dans les centres de données suisses d'Infomaniak, sans sous-traitant ni transfert à l'étranger. L'éditeur indique que les échanges ne servent jamais à entraîner de modèle.",
+            geopolitics: "Le nom est un acronyme revendiqué, pour intelligence artificielle éthique, universelle, responsable, indépendante et autonome. Au-delà de la formule, Euria illustre un autre versant de la question, celui de l'ancrage physique : la chaleur produite par les serveurs est réinjectée dans le réseau de chauffage urbain de Genève. Une IA occupe un bâtiment, consomme un réseau électrique et relève d'un droit national, trois choses qu'un chatbot dans un navigateur fait oublier.",
+            atout: "Tout reste en Suisse, du calcul au stockage, et la chaleur des serveurs chauffe des logements",
+            sources: [
+                { label: "Infomaniak, Euria, l'assistant IA souverain", url: "https://www.infomaniak.com/fr/euria" },
+                { label: "Infomaniak, annonce d'Euria", url: "https://news.infomaniak.com/euria-assistant-ia-souverain/" }
+            ]
+        },
+        {
+            id: "apertus", name: "Apertus", company: "EPFL, ETH Zurich et CSCS", location: [46.005, 8.951],
+            country: "Suisse", city: "Lugano", color: "#127676", logo: mono("A", "#127676"),
+            section: "alternative", statut: "modele", founded: "2025",
+            modele: "Apertus 1.5, 8 et 70 Md",
+            hebergement: "Supercalculateur Alps du CSCS, à Lugano", ouverture: "Entièrement ouvert, poids, données et recettes",
+            acces: "Pas d'interface grand public, accès par Swisscom, Hugging Face ou le réseau Public AI",
+            regime: "protege",
+            donnees: "Il n'y a pas de service à qui confier des données : le modèle se télécharge et s'exécute sur l'infrastructure de qui l'utilise. Le régime dépend donc entièrement de celui qui le déploie.",
+            geopolitics: "Publié le 2 septembre 2025 par deux écoles polytechniques fédérales et le centre national de calcul, Apertus est le contre-exemple public de cette carte. Son nom veut dire ouvert en latin, et tout l'est effectivement, les poids comme les données d'entraînement et les recettes, ce qu'aucun modèle commercial ne fait. Entraîné sur plus de 1800 langues, il montre qu'un État peut financer une infrastructure de langue comme il finance des routes.",
+            atout: "Le seul modèle de cette carte dont on peut auditer jusqu'aux données d'entraînement",
+            sources: [
+                { label: "ETH Zurich, communiqué de lancement d'Apertus", url: "https://ethz.ch/en/news-and-events/eth-news/news/2025/09/press-release-apertus-a-fully-open-transparent-multilingual-language-model.html" },
+                { label: "EPFL, Apertus 1.5", url: "https://actu.epfl.ch/news/apertus-15-building-the-next-generation-of-open--2/" }
+            ]
+        },
+        {
+            id: "lighton", name: "LightOn", company: "LightOn", location: [48.870, 2.331],
+            country: "France", city: "Paris", color: "#E3A535", logo: mono("Lo", "#E3A535"),
+            section: "alternative", statut: "organisations", founded: "2016",
+            modele: "Déployés chez le client",
+            hebergement: "Dans l'environnement du client", ouverture: "Variable selon le déploiement",
+            acces: "Réservé aux organisations, pas de service grand public",
+            regime: "protege",
+            donnees: "Le principe de l'offre est que les données ne sortent pas de l'environnement du client, l'installation se faisant chez lui.",
+            geopolitics: "LightOn est la première entreprise européenne d'IA générative à être entrée en bourse à Paris, et vend une IA souveraine installée chez le client, principalement à des administrations françaises, une quinzaine à la mi-2026. Sa taille rappelle l'échelle réelle du rapport de force : un chiffre d'affaires de 1,1 million d'euros au premier semestre 2026, quand les acteurs américains lèvent des milliards.",
+            atout: "Déploiement dans l'infrastructure du client, les données ne partent pas",
+            sources: [
+                { label: "LightOn, salle de presse", url: "https://lighton.ai/newsroom" },
+                { label: "Résultats du premier semestre 2026", url: "https://www.tradingview.com/news/eqs:8b8b41032094b:0-lighton-half-year-2026-revenue-up-by-51/" }
+            ]
+        },
+        {
+            id: "alephalpha", name: "Aleph Alpha", company: "Cohere, Canada", location: [49.399, 8.672],
+            country: "Allemagne", city: "Heidelberg", color: "#8b5cf6", logo: mono("Æ", "#8b5cf6"),
+            section: "alternative", statut: "rachete", founded: "2019",
+            modele: "Luminous, puis applications",
+            hebergement: "Allemagne", ouverture: "Fermé",
+            acces: "Entreprises et administrations",
+            regime: "protege",
+            donnees: "Offre destinée aux organisations, avec déploiement souverain. Le régime dépend du contrat et de l'installation.",
+            geopolitics: "Aleph Alpha a longtemps porté l'espoir allemand d'un champion national de l'IA. La société a renoncé à la course aux grands modèles dès 2024 pour se replier sur les applications d'entreprise, a perdu son fondateur en octobre 2025, réduit ses effectifs en janvier 2026, puis a été rachetée en avril 2026 par le canadien Cohere. Le champion de la souveraineté européenne appartient désormais à une entreprise nord-américaine, ce qui est l'illustration la plus franche du fait qu'une souveraineté peut s'acheter.",
+            atout: "Cas d'école sur ce que vaut une souveraineté sans capitaux à sa mesure",
+            sources: [
+                { label: "CNBC, Cohere rachète Aleph Alpha", url: "https://www.cnbc.com/2026/04/24/cohere-aleph-alpha-germany-ai-europe-expansion.html" }
+            ]
+        },
+        {
+            id: "huggingchat", name: "HuggingChat Omni", company: "Hugging Face", location: [48.867, 2.343],
+            country: "France", city: "Paris et New York", color: "#ffcc4d", logo: mono("HF", "#ffcc4d"),
+            section: "alternative", statut: "routeur", founded: "2023",
+            modele: "115 modèles, 15 fournisseurs",
+            hebergement: "Dépend du fournisseur retenu pour chaque requête", ouverture: "Interface ouverte, modèles variables",
+            acces: "Gratuit avec crédits, offre payante",
+            regime: "entraine",
+            donnees: "Le service choisit à chaque requête un modèle chez un fournisseur tiers. Le sort des données dépend donc de celui qui répond, et change d'une question à l'autre.",
+            geopolitics: "Hugging Face, entreprise franco-américaine, avait fermé HuggingChat le 1er juillet 2025, avant de le relancer en octobre sous le nom d'Omni. Ce n'est plus un assistant mais un aiguilleur, qui envoie chaque question au modèle le mieux placé parmi cent quinze. Commode, mais cela dissout la question de l'origine : demander où vont vos données n'a plus de réponse unique.",
+            atout: "Un seul point d'entrée vers l'essentiel des modèles ouverts du marché",
+            sources: [
+                { label: "Hugging Face, annonce de HuggingChat Omni", url: "https://huggingface.co/spaces/huggingchat/chat-ui/discussions/764" },
+                { label: "Annonce de fermeture, juillet 2025", url: "https://huggingface.co/spaces/huggingchat/chat-ui/discussions/747" }
+            ]
         }
     ];
+
+    const dominants = chatbots.filter(b => b.section === "dominant");
+    const alternatives = chatbots.filter(b => b.section === "alternative");
+
+    // Statut d'accessibilité, propre aux alternatives.
+    const STATUTS = {
+        accessible:   { label: "Accessible à tous", teinte: "#127676" },
+        modele:       { label: "Modèle seul, sans interface grand public", teinte: "#7a6a2e" },
+        organisations:{ label: "Réservé aux organisations", teinte: "#7a6a2e" },
+        rachete:      { label: "Passé sous contrôle canadien en 2026", teinte: "#B83A1F" },
+        routeur:      { label: "Aiguilleur vers des modèles tiers", teinte: "#B83A1F" }
+    };
+
+    // Un seul endroit où se décide la couleur d'un pays, sur la carte comme sur les étiquettes.
+    const PAYS = {
+        "USA":       { fond: "#2563eb", trait: "#1e40af", opacite: 0.30, epaisseur: 1.5, texte: "#F2EFE6" },
+        "France":    { fond: "#E3A535", trait: "#B83A1F", opacite: 0.45, epaisseur: 2,   texte: "#0D1617" },
+        "Chine":     { fond: "#B83A1F", trait: "#7f1d1d", opacite: 0.28, epaisseur: 1.5, texte: "#F2EFE6" },
+        "Suisse":    { fond: "#127676", trait: "#0b4f4f", opacite: 0.45, epaisseur: 2,   texte: "#F2EFE6" },
+        "Allemagne": { fond: "#8b5cf6", trait: "#5b3aa8", opacite: 0.30, epaisseur: 1.5, texte: "#F2EFE6" }
+    };
 
     const cityCounts = {};
     chatbots.forEach(b => { cityCounts[b.city] = (cityCounts[b.city] || 0) + 1; });
@@ -689,12 +1002,13 @@
             L.geoJSON(data, {
                 style: function(feature) {
                     const name = feature.properties.name;
-                    const isUS = name === "United States of America" || name === "United States";
-                    const isCN = name === "China";
-                    const isFR = name === "France";
-                    if (isUS) return { fillColor: "#2563eb", fillOpacity: 0.3,  color: "#1e40af", weight: 1.5 };
-                    if (isFR) return { fillColor: "#E3A535", fillOpacity: 0.45, color: "#B83A1F", weight: 2 };
-                    if (isCN) return { fillColor: "#B83A1F", fillOpacity: 0.28, color: "#7f1d1d", weight: 1.5 };
+                    const alias = {
+                        "United States of America": "USA", "United States": "USA",
+                        "China": "Chine", "France": "France",
+                        "Switzerland": "Suisse", "Germany": "Allemagne"
+                    };
+                    const style = PAYS[alias[name]];
+                    if (style) return { fillColor: style.fond, fillOpacity: style.opacite, color: style.trait, weight: style.epaisseur };
                     return { fillColor: "#0D1617", fillOpacity: 0.04, color: "#127676", weight: 0.5 };
                 }
             }).addTo(map);
@@ -714,16 +1028,19 @@
 
         L.marker([lat, lng], { icon }).addTo(map).on('click', () => showOverlay(bot, [lat, lng]));
 
+        const regime = REGIMES[bot.regime];
         const item = document.createElement('div');
         item.className = 'bot-item';
         item.innerHTML = `
             <div class="bot-logo-wrap">${bot.logo}</div>
             <div>
                 <div class="bot-name">${bot.name}</div>
-                <div class="bot-city">${bot.city}</div>
-            </div>`;
+                <div class="bot-city">${bot.city}, ${bot.country}</div>
+            </div>
+            <div class="bot-regime" style="color:${regime.teinte}" title="${regime.label}">${regime.pastille}</div>`;
         item.onclick = () => showOverlay(bot, [lat, lng]);
-        document.getElementById('bot-list').appendChild(item);
+        const cible = bot.section === "dominant" ? 'bot-list' : 'alt-list';
+        document.getElementById(cible).appendChild(item);
     });
 
     function showOverlay(bot, coords) {
@@ -731,8 +1048,17 @@
         overlay.style.display = 'block';
         overlay.style.borderColor = bot.color;
 
-        const tagColor = bot.country === "USA" ? "#2563eb" : (bot.country === "France" ? "#E3A535" : "#B83A1F");
-        const tagTextColor = bot.country === "France" ? "#0D1617" : "#F2EFE6";
+        const pays = PAYS[bot.country] || { fond: "#127676", texte: "#F2EFE6" };
+        const regime = REGIMES[bot.regime];
+        const statut = bot.statut ? STATUTS[bot.statut] : null;
+
+        const statutHtml = statut
+            ? `<span class="overlay-statut" style="border-color:${statut.teinte};color:${statut.teinte}">${statut.label}</span>`
+            : '';
+
+        const sourcesHtml = (bot.sources || []).map(s =>
+            `<li><a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label}</a></li>`
+        ).join('');
 
         document.getElementById('overlay-content').innerHTML = `
             <div class="overlay-bot-header">
@@ -740,9 +1066,10 @@
                 <div>
                     <div class="overlay-bot-name">${bot.name}</div>
                     <div class="overlay-meta">
-                        <span class="overlay-country-tag" style="background:${tagColor};color:${tagTextColor}">${bot.country}</span>
+                        <span class="overlay-country-tag" style="background:${pays.fond};color:${pays.texte}">${bot.country}</span>
                         <span class="overlay-company">${bot.company}</span>
                     </div>
+                    ${statutHtml}
                 </div>
             </div>
 
@@ -752,28 +1079,43 @@
                     <div class="overlay-stat-value">${bot.founded}</div>
                 </div>
                 <div class="overlay-stat">
-                    <div class="overlay-stat-label">Utilisateurs</div>
-                    <div class="overlay-stat-value">${bot.users}</div>
+                    <div class="overlay-stat-label">Modèle</div>
+                    <div class="overlay-stat-value petit">${bot.modele}</div>
                 </div>
                 <div class="overlay-stat">
-                    <div class="overlay-stat-label">Modèle</div>
-                    <div class="overlay-stat-value" style="font-size:0.65rem;font-family:'Oswald',sans-serif;letter-spacing:0.04em">${bot.modele}</div>
+                    <div class="overlay-stat-label">Ouverture</div>
+                    <div class="overlay-stat-value petit">${bot.ouverture}</div>
                 </div>
             </div>
 
+            <div class="overlay-donnees" style="border-color:${regime.teinte}">
+                <div class="overlay-donnees-titre" style="color:${regime.teinte}">
+                    ${regime.pastille} ${regime.label}
+                </div>
+                <div class="overlay-donnees-texte">${bot.donnees}</div>
+                <div class="overlay-donnees-lieu">Traitement et stockage : ${bot.hebergement}</div>
+                <div class="overlay-donnees-lieu">Accès : ${bot.acces}</div>
+            </div>
+
             <div class="overlay-geo-block">
-                <div class="overlay-geo-label">◆ Axe Géopolitique</div>
+                <div class="overlay-geo-label">◆ Axe géopolitique</div>
                 <div class="overlay-geo-text">${bot.geopolitics}</div>
             </div>
 
             <div class="overlay-atout">
-                <div class="overlay-atout-label">✦ Atout Clef</div>
+                <div class="overlay-atout-label">✦ Ce qu'il apporte</div>
                 <div class="overlay-atout-text">${bot.atout}</div>
+            </div>
+
+            <div class="overlay-sources">
+                <div class="overlay-sources-label">❧ Sources</div>
+                <ul>${sourcesHtml}</ul>
             </div>
 
             <button class="overlay-close-btn" onclick="closeOverlay()">◀ Fermer</button>
         `;
 
+        overlay.scrollTop = 0; // une fiche s'ouvre toujours par son en-tête
         map.flyTo(coords, 11, { duration: 1.2 });
     }
 
