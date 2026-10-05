@@ -29,7 +29,6 @@ Rang de source : **1** primaire directe (l'éditeur lui-même), **2** média de 
 | **HuggingChat fermé**, relancé en Omni (115 modèles, 15 fournisseurs) | 2025-07-01, puis 2025-10-16 | [Fermeture](https://huggingface.co/spaces/huggingchat/chat-ui/discussions/747), [Omni](https://huggingface.co/spaces/huggingchat/chat-ui/discussions/764) | 1 |
 | **Apertus** publié par l'EPFL, l'ETH Zurich et le CSCS, entièrement ouvert | 2025-09-02 | [ETH Zurich](https://ethz.ch/en/news-and-events/eth-news/news/2025/09/press-release-apertus-a-fully-open-transparent-multilingual-language-model.html), [EPFL, Apertus 1.5](https://actu.epfl.ch/news/apertus-15-building-the-next-generation-of-open--2/) | 1 |
 | **Lumo tourne sur Qwen 3.5 et GLM 5.2**, modèles ouverts chinois, sur serveurs Proton européens | 2026-08 | [Proton, Lumo privacy](https://proton.me/support/lumo-privacy) | 1 |
-| **LightOn**, 1,1 M€ de chiffre d'affaires au premier semestre, une quinzaine d'institutions publiques | 2026-06-30 | [Résultats semestriels](https://www.tradingview.com/news/eqs:8b8b41032094b:0-lighton-half-year-2026-revenue-up-by-51/) | 2 |
 | **GPT-5.6** (Sol, Terra, Luna) | 2026-08 | [OpenAI](https://openai.com/index/previewing-gpt-5-6-sol/) | 1 |
 | **Gemini 3.1 Pro et 3.6 Flash** | 2026-07-21 | [Google](https://blog.google/products-and-platforms/products/gemini/gemini-3/) | 1 |
 

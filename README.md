@@ -4,10 +4,10 @@
 
 Carte interactive des assistants d'intelligence artificielle, pour la formation. Elle répond à trois questions, dans cet ordre : d'où vient l'outil, sur quel modèle il repose, et ce qu'il advient des données qu'on lui confie.
 
-Seize acteurs, rangés en deux listes.
+Quinze acteurs, rangés en deux listes.
 
 - **Les dominants**, dix outils qu'on rencontre partout, six américains, un français, trois chinois.
-- **Les alternatives européennes**, six entrées dont chacune porte son statut réel : accessible à tous, modèle sans interface grand public, réservé aux organisations, passé sous contrôle étranger, ou simple aiguilleur vers des modèles tiers.
+- **Les alternatives européennes**, cinq entrées dont chacune porte son statut réel : accessible à tous, modèle sans interface grand public, passé sous contrôle étranger, ou simple aiguilleur vers des modèles tiers.
 
 Chaque fiche porte une pastille disant ce que l'outil fait de vos échanges. Trois régimes : ils entraînent le modèle, ils ne l'entraînent pas, ou ils sont chiffrés au point que l'éditeur lui-même ne peut pas les lire.
 
